@@ -1,0 +1,37 @@
+version: '3'
+
+networks:
+  web-net:
+    driver: bridge
+
+services:
+
+  nginx:
+    restart: always
+    image: nginx:1.20
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/webroot:/var/www/html
+      - ./certbot/etc:/etc/letsencrypt
+      - ./certbot/var:/var/lib/letsencrypt
+    networks:
+      - web-net
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/etc:/etc/letsencrypt
+      - ./certbot/var:/var/lib/letsencrypt
+      - ./nginx/webroot:/var/www/html
+    depends_on:
+      - nginx
+    #command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d comm.cmmc.space
+    command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d monitor.cmmc.space
+    #command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d monitor.cmmc.space --dry-run
+    #command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d wiki.internal.vincentio.in --dry-run
+    networks:
+      - web-net
