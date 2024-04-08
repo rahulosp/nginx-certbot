@@ -1,0 +1,1 @@
+0 18 */10 * * /bin/bash /opt/nginx-certbot/autorenew/cert-renew-auto.sh

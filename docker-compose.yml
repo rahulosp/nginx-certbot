@@ -20,18 +20,28 @@ services:
     networks:
       - web-net
 
-  certbot:
+  mattermost-certbot:
     image: certbot/certbot
-    container_name: certbot
+    container_name: mattermost-certbot
     volumes:
       - ./certbot/etc:/etc/letsencrypt
       - ./certbot/var:/var/lib/letsencrypt
       - ./nginx/webroot:/var/www/html
     depends_on:
       - nginx
-    #command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d comm.cmmc.space
-    command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d monitor.cmmc.space
-    #command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d monitor.cmmc.space --dry-run
-    #command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d wiki.internal.vincentio.in --dry-run
+    command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d mattermost-test.cmmc.space
+    networks:
+      - web-net
+
+  monitor-certbot:
+    image: certbot/certbot
+    container_name: monitor-certbot
+    volumes:
+      - ./certbot/etc:/etc/letsencrypt
+      - ./certbot/var:/var/lib/letsencrypt
+      - ./nginx/webroot:/var/www/html
+    depends_on:
+      - nginx
+    command: certonly --webroot --webroot-path=/var/www/html --email singh.rahul.1603@gmail.com --agree-tos --no-eff-email --force-renewal -d monitor-test.cmmc.space
     networks:
       - web-net
