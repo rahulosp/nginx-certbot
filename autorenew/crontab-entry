@@ -1,0 +1,3 @@
+# This is how the script should be schedules in a crontab
+# The below runs the script at 0: 800 hours on 1st day and 15th day of every months.
+0 8 1,15 * * /opt/nginx-certbot/autorenew/cert-renew-auto.sh
